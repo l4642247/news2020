@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>昨日头条</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all">
+</head>
+
+<body>
+    <div class="layui-container main">
+        <div class="layui-row">
+            <h1 th:text="${newsCur.getTitle()}"></h1>
+            <div class="content" th:utext="${newsCur.getContent()}"></div>
+            <p th:text="${newsCur.getPublisher()}"></p>
+            <p th:text="${newsCur.getClick()}"></p>
+            <p th:text="${newsCur.getPublishTime()}"></p>
+        </div>
+        <div>
+            <a th:href="${newsPre == null ? '#' : newsPre.getId()}" th:text="${newsPre == null ? '没有上一篇啦！' : newsPre.getTitle()}"></a>
+            <a th:href="${newsNext == null ? '#' : newsNext.getId()}" th:text="${newsNext == null ? '没有下一篇啦！' : newsNext.getTitle()}"></a>
+        </div>
+    </div>
+</body>
+
+
+<script src="../layuiadmin/layui/layui.js"></script>
+<style>
+    .main{
+        width: 700px;
+        margin: 0 auto;
+    }
+    .shortcut h3{
+        border-left: 5px solid #F74C31;
+        padding-left: 10px;
+    }
+    .shortcut ul{
+        margin-top: 20px;
+    }
+    .shortcut ul li{
+        padding: 5px 0;
+    }
+    .content{
+        font-size: 14px;
+        line-height: 30px;
+        text-indent: 2em;
+    }
+    .content img{
+        width: 80%;
+        text-align: center;
+    }
+    .content p{
+        padding: 10px 0;
+    }
+</style>
+<script>
+
+</script>
+</body>
+</html>
+
+

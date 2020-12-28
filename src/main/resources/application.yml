@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: Cnm.0001+
+    url: jdbc:mysql://nicecoder.cn:3306/project?useSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  redis:
+    port: 6379
+    database: 0
+    host: 127.0.0.1
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    timeout: 5000ms
+
+  thymeleaf:
+    cache: false
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+# 自定义配置
+spider:
+  configuration:
+    limit: 3
+    url: https://i.news.qq.com/trpc.qqnews_web.kv_srv.kv_srv_http_proxy/list?sub_srv_id=gd&srv_id=pc&offset=0&strategy=1&ext=%7b%22pool%22%3a%5b%22top%22%5d%2c%22is_filter%22%3a10%2c%22check_type%22%3atrue%7d&limit=
+    thread: 5
