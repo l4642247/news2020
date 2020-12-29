@@ -15,15 +15,20 @@
 <body>
     <div class="layui-container main">
         <div class="layui-row">
-            <h1 th:text="${newsCur.getTitle()}"></h1>
+            <h1 class="title" th:text="${newsCur.getTitle()}"></h1>
+            <div class="publishInfo">
+                <p class = "publisher" th:text="${newsCur.getPublisher()}"></p>
+                <p class = "publishTime">发布时间：<span th:text="${newsCur.getPublishTime()}"></span></p>
+            </div>
             <div class="content" th:utext="${newsCur.getContent()}"></div>
-            <p th:text="${newsCur.getPublisher()}"></p>
-            <p th:text="${newsCur.getClick()}"></p>
-            <p th:text="${newsCur.getPublishTime()}"></p>
         </div>
         <div>
-            <a th:href="${newsPre == null ? '#' : newsPre.getId()}" th:text="${newsPre == null ? '没有上一篇啦！' : newsPre.getTitle()}"></a>
-            <a th:href="${newsNext == null ? '#' : newsNext.getId()}" th:text="${newsNext == null ? '没有下一篇啦！' : newsNext.getTitle()}"></a>
+            <span class="newsPre">
+                <a th:href="${newsPre == null ? '#' : newsPre.getId()}" th:text="${newsPre == null ? '没有上一篇啦！' : '上一篇：'+newsPre.getTitle()}"></a>
+            </span>
+            <span class="newsNext">
+                <a th:href="${newsNext == null ? '#' : newsNext.getId()}" th:text="${newsNext == null ? '没有下一篇啦！' : '下一篇：' + newsNext.getTitle()}"></a>
+            </span>
         </div>
     </div>
 </body>
@@ -35,27 +40,43 @@
         width: 700px;
         margin: 0 auto;
     }
-    .shortcut h3{
-        border-left: 5px solid #F74C31;
-        padding-left: 10px;
-    }
-    .shortcut ul{
-        margin-top: 20px;
-    }
-    .shortcut ul li{
-        padding: 5px 0;
+    .title{
+        padding-top: 40px;
+        padding-bottom: 20px;
+        text-align: justify;
+        font-size: 40px;
+        color: #000;
+        font-weight: 700;
+        font-family: "Microsoft Yahei", "微软雅黑", "宋体";
     }
     .content{
         font-size: 14px;
         line-height: 30px;
-        text-indent: 2em;
+        padding-top: 30px;
+        padding-bottom: 20px;
     }
     .content img{
-        width: 80%;
-        text-align: center;
+        width: 100%;
     }
     .content p{
         padding: 10px 0;
+    }
+    .newsPre{
+        float: left;
+    }
+    .newsNext{
+        float: right;
+    }
+    .publishInfo{
+        border-left: #afb9c3 solid 5px;
+        padding-left: 20px;
+    }
+    .publisher{
+        font-size: 18px;
+        color: #000;
+    }
+    .publishTime{
+        font-size: 14px;
     }
 </style>
 <script>

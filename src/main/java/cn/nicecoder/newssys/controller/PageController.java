@@ -49,6 +49,9 @@ public class PageController {
         List<NewsCatalogVO> catalogVOList = newsCatalogService.listAllCatalog();
         // 封装数据
         NewsPageVO newsPageVO = new NewsPageVO(newsList, newsDO.getCurrent(), newsDO.getSize(), newsDO.getPages());
+        model.addAttribute("current", newsDO.getCurrent());
+        model.addAttribute("size", newsDO.getSize());
+        model.addAttribute("pages", newsDO.getPages());
         model.addAttribute("pageResult", newsPageVO);
         model.addAttribute("newsWatchingTop",newsWatchingTopList);
         model.addAttribute("newsClickTop",newsClickTopList);

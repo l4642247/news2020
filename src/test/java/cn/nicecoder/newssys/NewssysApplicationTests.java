@@ -13,9 +13,7 @@ class NewssysApplicationTests {
 
         News obj = new News();
         System.out.println(obj);
-        System.out.println(ObjectUtils.checkAllFieldIsNull(obj));
 
-        obj.setClick(1);
         System.out.println(obj);
         System.out.println(ObjectUtil.isAllEmpty(obj));
     }

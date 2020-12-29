@@ -19,9 +19,11 @@
     <div class="layui-fluid nav">
         <div class="layui-container">
             <div class="layui-row">
-                <span class="layui-breadcrumb" lay-separator="|" th:each="catalog : ${catalogResult}">
-                    <a href="#" th:text="${catalog.getName()}"></a>
+                <span class="layui-breadcrumb" th:each="catalog : ${catalogResult}">
+                  <a href="" th:text="${catalog.getName()}"></a>
+                  <span class="separator">/</span>
                 </span>
+                <a href="">全部</a>
             </div>
         </div>
     </div>
@@ -52,7 +54,7 @@
                 </div>
 
                 <div class="layui-row more">
-                    more
+                    <button type="button" class="layui-btn" onclick="more()">more</button>
                 </div>
 
             </div>
@@ -108,6 +110,9 @@
     .content{
         padding: 10px 0;
     }
+    .separator{
+        padding: 0 5px;
+    }
     .more{
         text-align: center;
         border: 1px solid #666;
@@ -133,6 +138,19 @@
     }
 </style>
 <script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+        var $ = layui.$
+
+
+        window.more = function() {
+            $.ajax({url:"news/listPage",success:function(result){
+                    console.log(result)
+                }});
+        }
+    });
+
 
 </script>
 </body>
