@@ -13,4 +13,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface NewsUserService extends IService<NewsUser> {
 
+    /**
+     * @Description: 不存在则新增
+     * @author: longt
+     * @Param: [user]
+     * @return: cn.nicecoder.newssys.entity.NewsUser
+     * @date: 2020/12/31 下午3:42
+     */
+    NewsUser saveNotExist(NewsUser user);
 }

@@ -1,15 +1,20 @@
 package cn.nicecoder.newssys.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.nicecoder.newssys.entity.DO.NewsCommentDO;
+import cn.nicecoder.newssys.entity.NewsUser;
 import cn.nicecoder.newssys.entity.VO.NewsCommentPageVO;
 import cn.nicecoder.newssys.entity.VO.NewsCommentVO;
 import cn.nicecoder.newssys.entity.comm.Resp;
 import cn.nicecoder.newssys.service.NewsCommentService;
+import cn.nicecoder.newssys.service.NewsUserService;
+import cn.nicecoder.newssys.util.IPUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -28,6 +33,9 @@ public class NewsCommentController {
     @Autowired
     NewsCommentService newsCommentService;
 
+    @Autowired
+    NewsUserService newsUserService;
+
     /**
      * 新增评论
      * @author: longt
@@ -37,7 +45,14 @@ public class NewsCommentController {
      */
     @PostMapping("/saveOne")
     @ApiOperation(value="新增评论",notes="newsCommentDO必填")
-    public Resp saveOne(@RequestBody NewsCommentDO newsCommentDO){
+    public Resp saveOne(HttpServletRequest request, @RequestBody NewsCommentDO newsCommentDO){
+        String ip = IPUtil.getIpAddress(request);
+        NewsUser user = new NewsUser();
+        user.setIp(ip);
+        user.setName(ip);
+        user.setAvatar(1);
+        user = newsUserService.saveNotExist(user);
+        newsCommentDO.setCommFrom(user.getId());
         int id = newsCommentService.saveOne(newsCommentDO);
         return Resp.ok(id);
     }

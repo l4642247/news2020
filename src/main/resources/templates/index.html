@@ -13,6 +13,9 @@
 </head>
 
 <body>
+    <input name="current" th:value="${current}" hidden>
+    <input name="size" th:value="${size}" hidden>
+    <input name="pages" th:value="${pages}" hidden>
     <div class="layui-fluid" style="padding: 0">
         <div class="layui-row wallpaper"></div>
     </div>
@@ -36,7 +39,7 @@
                         <img class="cover" th:src="${news.getCover()}">
                     </div>
                     <div class="layui-col-md8">
-                        <a th:href="@{'news/'+${news.getId()}}" target="_blank">
+                        <a th:href="@{'news/'+${news.getId()}}">
                             <h3 class="layui-elip" th:text="${news.getTitle()}" ></h3>
                         </a>
                         <p class="layui-text content" th:text="${news.getSummary()}"></p>
@@ -53,9 +56,7 @@
                     </div>
                 </div>
 
-                <div class="layui-row more">
-                    <button type="button" class="layui-btn" onclick="more()">more</button>
-                </div>
+                <a href="javascript:more();"><div class="layui-row more" th:if="${pages > current}"></div></a>
 
             </div>
 
@@ -143,10 +144,42 @@
         var element = layui.element;
         var $ = layui.$
 
+        var current = Number($("input[name='current']").val());
+        var size = Number($("input[name='size']").val());
 
         window.more = function() {
-            $.ajax({url:"news/listPage",success:function(result){
-                    console.log(result)
+            var html = '';
+            $.ajax({
+                url:'news/listPage',
+                data:{'current': current + 1, 'size': size},
+                success:function(result){
+                    current = result.data.current;
+
+                    $.each(result.data.list, function(i,val){
+                        html +="<div class='layui-row article'>\n" +
+                            "<div class='layui-col-md4' >\n" +
+                            "<img class='cover' src='"+val.cover+"'>\n" +
+                            "</div>\n" +
+                            "<div class='layui-col-md8'>\n" +
+                            "<a href='/news/"+val.id+"'>\n" +
+                            "<h3 class='layui-elip'>"+val.title+"</h3>\n" +
+                            "</a>\n" +
+                            "<p class='layui-text content'>"+val.summary+"</p>\n" +
+                            "<div class='row'>\n" +
+                            "<div class='layui-col-md6' >\n" +
+                            "<span>"+val.publisher+"</span>\n" +
+                            "        &nbsp;&nbsp;\n" +
+                            "<span>"+val.publishTime+"</span>\n" +
+                            "</div>\n" +
+                            "<div class='layui-col-md6' style='text-align: right'>\n" +
+                            "        在看：<span>"+val.watching+"</span>\n" +
+                            "</div>\n" +
+                            "</div>\n" +
+                            "</div>\n" +
+                            "</div>"
+                    });
+
+                    $(".article:last").after(html);
                 }});
         }
     });

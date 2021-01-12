@@ -40,7 +40,7 @@ public class NewsCommentServiceImpl extends ServiceImpl<NewsCommentMapper, NewsC
 
     @Override
     public List<NewsCommentVO> listPageComment(NewsCommentDO newsCommentDO) {
-        if(newsCommentDO.getCurrent() == 0 || newsCommentDO.getSize() == 0){
+        if(newsCommentDO.getCurrent() == 0 && newsCommentDO.getSize() == 0){
             newsCommentDO.setCurrent(PAGE_CURRENT_DEFAULT);
             newsCommentDO.setSize(PAGE_SIZE_DEFAULT);
         }

@@ -43,7 +43,7 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
 
     @Override
     public List<NewsVO> listPageNews(NewsDO newsDO) {
-        if(newsDO.getCurrent() == 0 || newsDO.getSize() == 0){
+        if(newsDO.getCurrent() == 0 && newsDO.getSize() == 0){
             newsDO.setCurrent(PAGE_CURRENT_DEFAULT);
             newsDO.setSize(PAGE_SIZE_DEFAULT);
         }

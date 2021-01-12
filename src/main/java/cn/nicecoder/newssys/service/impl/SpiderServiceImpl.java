@@ -26,7 +26,7 @@ public class SpiderServiceImpl implements SpiderService {
     private Integer list_limit;
 
     @Autowired
-    private NewsPipeline newsPipeline;
+    NewsPipeline newsPipeline;
 
     @Autowired
     NewsProcessor newsProcessor;

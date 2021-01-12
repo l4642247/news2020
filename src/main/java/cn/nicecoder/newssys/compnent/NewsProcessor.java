@@ -34,9 +34,6 @@ public class NewsProcessor implements PageProcessor {
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000);
 
     @Autowired
-    private NewsPipeline newsPipeline;
-
-    @Autowired
     private NewsCatalogService newsCatalogService;
 
     @Autowired

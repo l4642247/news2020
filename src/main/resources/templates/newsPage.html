@@ -22,7 +22,8 @@
             </div>
             <div class="content" th:utext="${newsCur.getContent()}"></div>
         </div>
-        <div>
+
+        <div class="layui-row">
             <span class="newsPre">
                 <a th:href="${newsPre == null ? '#' : newsPre.getId()}" th:text="${newsPre == null ? '没有上一篇啦！' : '上一篇：'+newsPre.getTitle()}"></a>
             </span>
@@ -30,7 +31,18 @@
                 <a th:href="${newsNext == null ? '#' : newsNext.getId()}" th:text="${newsNext == null ? '没有下一篇啦！' : '下一篇：' + newsNext.getTitle()}"></a>
             </span>
         </div>
+        <div class="layui-row comment">
+            <div th:each="comment : ${commentList}">
+                <p th:utext="${comment.getContent()}"></p>
+            </div>
+        </div>
+        <div class="layui-row commentArea">
+            <textarea id="commentArea" style="display: none;"></textarea>
+            <button type="button" class="layui-btn" th:onclick="'commentSubmit(0,'+${newsCur.id}+')'">^</button>
+        </div>
     </div>
+
+    <footer class="foot">昨日头条，荣誉出品！</footer>
 </body>
 
 
@@ -78,9 +90,44 @@
     .publishTime{
         font-size: 14px;
     }
+    .commentArea{
+        padding-bottom: 30px;
+    }
+    .commentArea button{
+        width: 100%;
+    }
+    .foot{
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+    }
 </style>
 <script>
 
+
+    layui.use('layedit', function(){
+        var layedit = layui.layedit;
+        var index = layedit.build('commentArea',{
+            tool: ['face'],
+            height: 180 //设置编辑器高度
+        }); //建立编辑器
+
+        var $ = layui.$
+        window.commentSubmit = function(type, commTo){
+            var content = layedit.getContent(index)
+            var data = {'type': type, 'commTo': commTo, 'content': content}
+            $.ajax({
+                url:'/comment/saveOne',
+                type: 'post',
+                contentType: 'application/json',
+                dataType: "json",
+                data: JSON.stringify(data),
+                success:function(result){
+
+                    location.reload();
+                }});
+        }
+    });
 </script>
 </body>
 </html>

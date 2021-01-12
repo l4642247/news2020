@@ -2,12 +2,16 @@ package cn.nicecoder.newssys.controller;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.nicecoder.newssys.entity.DO.NewsCommentDO;
 import cn.nicecoder.newssys.entity.DO.NewsDO;
 import cn.nicecoder.newssys.entity.News;
 import cn.nicecoder.newssys.entity.VO.NewsCatalogVO;
+import cn.nicecoder.newssys.entity.VO.NewsCommentVO;
 import cn.nicecoder.newssys.entity.VO.NewsPageVO;
 import cn.nicecoder.newssys.entity.VO.NewsVO;
+import cn.nicecoder.newssys.enums.TypeEnum;
 import cn.nicecoder.newssys.service.NewsCatalogService;
+import cn.nicecoder.newssys.service.NewsCommentService;
 import cn.nicecoder.newssys.service.NewsService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,9 @@ public class PageController {
 
     @Autowired
     NewsCatalogService newsCatalogService;
+
+    @Autowired
+    NewsCommentService newsCommentService;
 
     /**
      * 去到首页
@@ -79,9 +86,18 @@ public class PageController {
         newsVO.setContent(current.getContent());
         newsVO.setPublishTime(DateUtil.format(current.getCreateTime(), DatePattern.NORM_DATETIME_PATTERN));
         newsVO.setClick(0);
+
+        // 评论列表
+        NewsCommentDO queryParam = new NewsCommentDO();
+        queryParam.setType(TypeEnum.COMMENT_TO_NEWS.getCode());
+        queryParam.setCommTo(current.getId());
+        List<NewsCommentVO> newsCommentVOList = newsCommentService.listPageComment(queryParam);
+
+        // 返回数据
         model.addAttribute("newsCur", newsVO);
         model.addAttribute("newsPre", newsPre);
         model.addAttribute("newsNext", newsNext);
+        model.addAttribute("commentList", newsCommentVOList);
         return "newsPage";
     }
 

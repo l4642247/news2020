@@ -10,5 +10,12 @@
             AND b.status = 1
         INNER JOIN news_user_avatar c ON b.avatar = c.id
         LEFT JOIN (SELECT like_to AS id, COUNT(0) agreeNum FROM news_like GROUP BY like_to) d ON a.id = d.id
+        WHERE 1=1
+        <if test="ncd.type != null and ncd.type != ''">
+            AND a.type = #{ncd.type}
+        </if>
+        <if test="ncd.commTo != null and ncd.commTo != ''">
+            AND a.comm_to = #{ncd.commTo}
+        </if>
     </select>
 </mapper>

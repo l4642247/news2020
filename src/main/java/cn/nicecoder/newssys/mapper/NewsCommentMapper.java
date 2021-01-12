@@ -6,6 +6,7 @@ import cn.nicecoder.newssys.entity.VO.NewsCommentVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -16,5 +17,5 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  * @since 2020-12-24
  */
 public interface NewsCommentMapper extends BaseMapper<NewsComment> {
-    IPage<NewsCommentVO> listPageComment(Page page, NewsCommentDO newsCommentDO);
+    IPage<NewsCommentVO> listPageComment(Page page, @Param("ncd") NewsCommentDO newsCommentDO);
 }
