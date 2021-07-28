@@ -28,6 +28,11 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+file:
+  common:
+    filePathWindow: E:\common\file\root\
+    uploadLinux: /Users/longtian/temp/image/
+
 
 # 自定义配置
 spider:

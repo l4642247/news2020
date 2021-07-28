@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/news")
-@Api(tags="新闻相关接口Controller")
+@Api(tags="新闻相关接口")
 public class NewsController {
     @Autowired
     NewsService newsService;

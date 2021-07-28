@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/newssys/news-catalog")
-@Api(tags="文章分类相关接口Controller")
+@Api(tags="文章分类相关接口")
 public class NewsCatalogController {
 
     @Autowired

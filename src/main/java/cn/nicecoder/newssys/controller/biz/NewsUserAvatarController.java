@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/avatar")
-@Api(tags="头像相关接口Controller")
+@Api(tags="头像相关接口")
 public class NewsUserAvatarController {
 
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/user")
-@Api(tags="用户相关接口Controller")
+@Api(tags="用户相关接口")
 public class NewsUserController {
 
 }

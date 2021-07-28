@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/like")
-@Api(tags="点赞相关接口Controller")
+@Api(tags="点赞相关接口")
 public class NewsLikeController {
 
     @Autowired

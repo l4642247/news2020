@@ -26,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/comment")
-@Api(tags="评论相关接口Controller")
+@Api(tags="评论相关接口")
 public class NewsCommentController {
 
     @Autowired

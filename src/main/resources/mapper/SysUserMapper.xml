@@ -9,6 +9,7 @@
     <select id="listPageBarberUser" resultType="cn.nicecoder.newssys.domain.response.base.SysUserVO">
         select a.id,a.avatar,a.name,a.phone,a.id_card,a.email,a.sex,a.status,a.username,a.password,a.description
         from sys_user a
+        where 1=1
         <if test="barberUserDO.name != null and barberUserDO.name != ''">
             and a.name like CONCAT('%',#{barberUserDO.name},'%')
         </if>
