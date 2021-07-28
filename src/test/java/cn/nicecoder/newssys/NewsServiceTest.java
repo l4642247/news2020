@@ -1,7 +1,7 @@
 package cn.nicecoder.newssys;
 
-import cn.nicecoder.newssys.entity.News;
-import cn.nicecoder.newssys.service.NewsService;
+import cn.nicecoder.newssys.domain.entity.biz.News;
+import cn.nicecoder.newssys.service.biz.NewsService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

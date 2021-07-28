@@ -1,7 +1,7 @@
 package cn.nicecoder.newssys;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.nicecoder.newssys.entity.News;
+import cn.nicecoder.newssys.domain.entity.biz.News;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

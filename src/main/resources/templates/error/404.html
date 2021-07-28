@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>404 Not Found</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/layuiadmin/style/login.css" media="all">
+</head>
+<body>
+    <div style="width:100%; padding-top: 300px; text-align: center">
+        <h1 style="font-size: 80px">404</h1>
+        <p>你哪个单位的，走错了吧！</p>
+        <br>
+        <a href="/admin"><-&nbsp;&nbsp;返回首页</a>
+    </div>
+<script src="../../static/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: './layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'user']);
+</script>
+</body>
+</html>

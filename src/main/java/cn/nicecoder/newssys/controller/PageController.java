@@ -2,30 +2,44 @@ package cn.nicecoder.newssys.controller;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import cn.nicecoder.newssys.entity.DO.NewsCommentDO;
-import cn.nicecoder.newssys.entity.DO.NewsDO;
-import cn.nicecoder.newssys.entity.News;
-import cn.nicecoder.newssys.entity.VO.NewsCatalogVO;
-import cn.nicecoder.newssys.entity.VO.NewsCommentVO;
-import cn.nicecoder.newssys.entity.VO.NewsPageVO;
-import cn.nicecoder.newssys.entity.VO.NewsVO;
-import cn.nicecoder.newssys.enums.TypeEnum;
-import cn.nicecoder.newssys.service.NewsCatalogService;
-import cn.nicecoder.newssys.service.NewsCommentService;
-import cn.nicecoder.newssys.service.NewsService;
+import cn.hutool.core.util.StrUtil;
+import cn.nicecoder.newssys.common.enums.TypeEnum;
+import cn.nicecoder.newssys.domain.entity.base.SysMenu;
+import cn.nicecoder.newssys.domain.entity.base.SysRole;
+import cn.nicecoder.newssys.domain.entity.base.SysRoleMenu;
+import cn.nicecoder.newssys.domain.entity.base.SysUser;
+import cn.nicecoder.newssys.domain.entity.biz.News;
+import cn.nicecoder.newssys.domain.request.biz.NewsCommentDO;
+import cn.nicecoder.newssys.domain.request.biz.NewsDO;
+import cn.nicecoder.newssys.domain.response.base.MenuNodeVO;
+import cn.nicecoder.newssys.domain.response.base.SysUserVO;
+import cn.nicecoder.newssys.domain.response.biz.NewsCatalogVO;
+import cn.nicecoder.newssys.domain.response.biz.NewsCommentVO;
+import cn.nicecoder.newssys.domain.response.biz.NewsPageVO;
+import cn.nicecoder.newssys.domain.response.biz.NewsVO;
+import cn.nicecoder.newssys.domain.comm.MenuTreeResp;
+import cn.nicecoder.newssys.service.base.SysMenuService;
+import cn.nicecoder.newssys.service.base.SysRoleMenuService;
+import cn.nicecoder.newssys.service.base.SysRoleService;
+import cn.nicecoder.newssys.service.base.SysUserService;
+import cn.nicecoder.newssys.service.biz.NewsCatalogService;
+import cn.nicecoder.newssys.service.biz.NewsCommentService;
+import cn.nicecoder.newssys.service.biz.NewsService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 页面跳转
- * @author: longt
+ * @author: xxxxx
  * @date: 2020/12/22 下午2:24
  */
 @Controller
@@ -40,13 +54,18 @@ public class PageController {
     @Autowired
     NewsCommentService newsCommentService;
 
-    /**
-     * 去到首页
-     * @author: longt
-     * @Param: [model, newsDO]
-     * @return: java.lang.String
-     * @date: 2020/12/24 上午9:13
-     */
+    @Autowired
+    SysRoleService sysRoleService;
+
+    @Autowired
+    SysUserService sysUserService;
+
+    @Autowired
+    SysMenuService sysMenuService;
+
+    @Autowired
+    SysRoleMenuService sysRoleMenuService;
+
     @GetMapping("/")
     public String index(Model model, NewsDO newsDO){
         // 查询数据
@@ -66,13 +85,110 @@ public class PageController {
         return "index";
     }
 
-    /**
-     * @Description: 列表详情页
-     * @author: longt
-     * @Param: [model, id]
-     * @return: java.lang.String
-     * @date: 2020/12/24 上午9:36
-     */
+    @GetMapping("/admin")
+    public String admin(Model model){
+        List<MenuNodeVO> menuTreeRoot = sysMenuService.createMenuTreeRoot(false, true);
+        MenuTreeResp resp = new MenuTreeResp(menuTreeRoot);
+        model.addAttribute("menuTree", resp);
+        String firstHref = getFirstHref(menuTreeRoot.get(0));
+        model.addAttribute("firstHref", firstHref);
+        return "admin/index";
+    }
+    public String getFirstHref(MenuNodeVO nodeVO){
+        List<MenuNodeVO> children = nodeVO.getChildren();
+        for(MenuNodeVO menuNodeVO : children){
+            if(StrUtil.isNotEmpty(menuNodeVO.getHref())){
+                return menuNodeVO.getHref();
+            }else{
+                return getFirstHref(menuNodeVO);
+            }
+        }
+        return "";
+    }
+
+    @GetMapping("/homepage")
+    public String homepage(Model model){
+        return "admin/home/homepage";
+    }
+
+    @GetMapping("/console")
+    public String console(){
+        return "admin/home/console";
+    }
+
+    @GetMapping("/403")
+    public String accessdenied(){
+        return "403";
+    }
+
+    @GetMapping("/user/role")
+    public String userRole(){
+        return "admin/user/role";
+    }
+
+    @GetMapping("/user/list")
+    public String userList(){
+        return "admin/user/user";
+    }
+
+    @GetMapping("/menu/list")
+    public String menuList(){
+        return "admin/menu/menu";
+    }
+
+    @GetMapping("/user/info")
+    public String userInfo(Model model){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        SysUserVO sysUserVO = sysUserService.getOneByUsername(username);
+        model.addAttribute("barberUserVO",sysUserVO);
+        return "admin/user/info";
+    }
+
+    @GetMapping("/user/roleform")
+    public String roleform(Model model, @RequestParam(value = "id", required = false) Long id){
+        SysRole SysRole = new SysRole();
+        if(id != null) {
+            SysRole = sysRoleService.getById(id);
+        }
+        List<SysRoleMenu> barberRoleMenuList = sysRoleMenuService.list(new LambdaQueryWrapper<SysRoleMenu>()
+                .eq(SysRoleMenu::getRoleId, id));
+        StringBuffer menuBuffer = new StringBuffer();
+        barberRoleMenuList.stream().forEach(item ->{
+            menuBuffer.append(item.getMenuId()).append(",");
+        });
+        if(menuBuffer.length() > 0){menuBuffer.deleteCharAt(menuBuffer.length() - 1);}
+        model.addAttribute("menus",menuBuffer.toString());
+        model.addAttribute("barberRole", SysRole);
+        return "admin/user/roleform";
+    }
+
+    @GetMapping("/menu/menuform")
+    public String menuform(Model model, @RequestParam(value = "id", required = false) Long id){
+        SysMenu sysMenu = new SysMenu();
+        if(id != null) {
+            sysMenu = sysMenuService.getById(id);
+        }
+        model.addAttribute("barberMenu", sysMenu);
+        return "admin/menu/menuform";
+    }
+
+    @GetMapping("/user/userform")
+    public String userform(Model model, @RequestParam(value = "id", required = false) Long id){
+        SysUser sysUser = new SysUser();
+        if(id != null) {
+            sysUser = sysUserService.getById(id);
+        }
+        model.addAttribute("barberUser", sysUser);
+        List<SysRole> roleList = sysRoleService.getRoleByUsername(sysUser.getUsername());
+        Long[] roleArr = new Long[roleList.size()];
+        for(SysRole item : roleList){
+            roleArr[roleList.indexOf(item)] = item.getId();
+        }
+        model.addAttribute("roles", roleArr);
+        return "admin/user/userform";
+    }
+    
     @GetMapping("/news/{id}")
     public String detailPage(Model model, @PathVariable("id") Integer id){
         News current = newsService.getOne(new LambdaQueryWrapper<News>().eq(News::getId, id));
@@ -101,6 +217,19 @@ public class PageController {
         return "newsPage";
     }
 
+    @GetMapping("/member/list")
+    public String memberList(){
+        return "admin/member/member";
+    }
 
+    @GetMapping("/order/list")
+    public String orderList(){
+        return "admin/order/order";
+    }
+
+    @GetMapping("/user/password")
+    public String userPassword(){
+        return "admin/user/password";
+    }
 
 }

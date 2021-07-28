@@ -1,6 +1,6 @@
 package cn.nicecoder.newssys;
 
-import cn.nicecoder.newssys.service.SpiderService;
+import cn.nicecoder.newssys.service.biz.SpiderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
