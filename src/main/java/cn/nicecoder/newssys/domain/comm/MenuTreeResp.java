@@ -2,7 +2,9 @@ package cn.nicecoder.newssys.domain.comm;
 
 import cn.nicecoder.newssys.domain.response.base.MenuNodeVO;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +13,9 @@ import java.util.List;
  * @date: 2020/12/24 上午11:13
  */
 @Data
-public class MenuTreeResp {
+public class MenuTreeResp implements Serializable {
+
+    private static final long serialVersionUID=1L;
 
     private Status status;
     private List<MenuNodeVO> data;

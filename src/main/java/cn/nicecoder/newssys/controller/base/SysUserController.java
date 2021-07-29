@@ -75,9 +75,7 @@ public class SysUserController {
     @ApiOperation(value="删除用户",notes="")
     public Resp delete(@PathVariable("id") Long id){
         SysUser sysUserDelete = new SysUser();
-        sysUserDelete.setId(id);
-        sysUserDelete.setStatus(CommonEnum.DELETED.getCode());
-        sysUserService.updateById(sysUserDelete);
+        sysUserService.removeById(id);
         return Resp.success(sysUserDelete);
     }
 

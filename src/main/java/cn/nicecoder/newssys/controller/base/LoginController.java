@@ -1,6 +1,8 @@
 package cn.nicecoder.newssys.controller.base;
 
+import cn.nicecoder.newssys.service.base.SysMenuService;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -22,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 @Api(tags="登录接口")
 public class LoginController 
 {
+    @Autowired
+    SysMenuService sysMenuService;
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "logout", required = false) String logout,
@@ -31,6 +36,7 @@ public class LoginController
             errorMessge = "用户名或密码错误";
         }*/
         if(logout != null) {
+            sysMenuService.removeChache();
             errorMessge = "账号已登出";
         }
         model.addAttribute("errorMessge", errorMessge);

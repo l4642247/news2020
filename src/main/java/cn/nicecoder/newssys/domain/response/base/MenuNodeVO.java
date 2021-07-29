@@ -1,8 +1,11 @@
 package cn.nicecoder.newssys.domain.response.base;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +14,12 @@ import java.util.List;
  * @date: 2021/3/10 下午3:56
  */
 @Data
-public class MenuNodeVO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class MenuNodeVO implements Serializable {
+
+    private static final long serialVersionUID=1L;
+
     @ApiModelProperty(value = "节点id")
     private String id;
 

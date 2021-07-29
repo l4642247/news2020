@@ -68,9 +68,7 @@ public class SysMenuController {
     @ApiOperation(value="删除菜单",notes="")
     public Resp delete(@PathVariable("id") Long id){
         SysMenu sysMenuDelete = new SysMenu();
-        sysMenuDelete.setId(id);
-        sysMenuDelete.setStatus(CommonEnum.DELETED.getCode());
-        sysMenuService.updateById(sysMenuDelete);
+        sysMenuService.removeById(id);
         return Resp.success(sysMenuDelete);
     }
 

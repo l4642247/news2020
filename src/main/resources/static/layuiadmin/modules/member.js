@@ -34,7 +34,7 @@
         else if ("edit" === e.event) {
             layer.open({
                 type: 2,
-                title: "编辑员工信息",
+                title: "编辑用户信息",
                 content: "memberform?id=" + e.data.id,
                 area: ["600px", "450px"],
                 btn: ["确定", "取消"],

@@ -21,7 +21,7 @@
         <input name="id" th:value="${barberMenu.id}">
       </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item" th:style="${barberMenu.type == 1 ? 'display: none' : ''}">
       <label class="layui-form-label">父菜单</label>
       <div class="layui-input-inline">
         <ul id="selTree1" class="dtree" data-id="0" th:data-value="${barberMenu.parentId}"></ul>
@@ -35,12 +35,15 @@
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">类型</label>
-      <div class="layui-input-inline">
-        <input th:checked="${barberMenu.type == 1} ? true : false" type="radio" name="type" value="1" title="菜单">
-        <input th:checked="${barberMenu.type == 0} ? true : false" type="radio" name="type" value="0" title="页面">
+      <div class="layui-input-inline" th:if="${not #strings.isEmpty(barberMenu.type)}">
+        <input th:value="${barberMenu.type == 1 ? '菜单':'页面'}" disabled class="layui-input">
+      </div>
+      <div class="layui-input-inline" th:if="${#strings.isEmpty(barberMenu.type)}">
+        <input type="radio" name="type" value="1" title="菜单">
+        <input type="radio" name="type" value="0" title="页面">
       </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item" th:style="${barberMenu.type == 1 ? 'display: none' : ''}">
       <label class="layui-form-label">路径</label>
       <div class="layui-input-inline">
         <input type="text" th:value="${barberMenu.href}" name="href" lay-verify="href" placeholder="请输入路径" autocomplete="off" class="layui-input">
@@ -55,7 +58,7 @@
       </div>
     </div>
 
-    <div class="layui-form-item">
+    <div class="layui-form-item" th:style="${barberMenu.type == 0 ? 'display: none' : ''}">
       <label class="layui-form-label">图标</label>
       <div class="layui-input-inline" style="width: 300px">
         <input type="text" th:value="${barberMenu.css}" name="css" id="iconHhysFa" lay-filter="" class="hide">

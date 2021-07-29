@@ -3,6 +3,7 @@ package cn.nicecoder.newssys.service.base.impl;
 import cn.hutool.core.util.ObjectUtil;
 
 import cn.nicecoder.newssys.common.enums.CommonEnum;
+import cn.nicecoder.newssys.common.util.RedisClient;
 import cn.nicecoder.newssys.domain.entity.base.SysMenu;
 import cn.nicecoder.newssys.domain.response.base.CheckArrVO;
 import cn.nicecoder.newssys.domain.response.base.MenuNodeVO;
@@ -10,6 +11,7 @@ import cn.nicecoder.newssys.mapper.base.SysMenuMapper;
 import cn.nicecoder.newssys.service.base.SysMenuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,10 +35,22 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     private static final Long PARENT_ID_MENU_DEFAULT = 0L;
     private static final String PARENT_ID_MENU_STR_DEFAULT = "0";
 
+    @Autowired
+    RedisClient redisClient;
+
+    /**
+     * redis缓存menu的模板
+     */
+    private static final String KEY_TEMPLATE = "KEYS_MENU_TREE:";
+
     @Override
     public List<MenuNodeVO> createMenuTreeRoot(boolean onlyParent, boolean onlyChecked) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String key = KEY_TEMPLATE + onlyParent + onlyChecked;
+        if(redisClient.get(key) != null){
+            return (List<MenuNodeVO>) redisClient.get(key);
+        }
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // 当前用户具有的权限菜单
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roleCodes = new ArrayList<>();
@@ -73,6 +87,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             }
             menuNodeVOList.add(nodeVO);
         }
+        redisClient.set(key, menuNodeVOList,3 * 60);
         return menuNodeVOList;
     }
 
@@ -131,5 +146,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             }
         }
         return nodeVO.getHref();
+    }
+
+    @Override
+    public void removeChache() {
+        redisClient.deleteByGroup(KEY_TEMPLATE);
     }
 }

@@ -32,7 +32,7 @@
         }); else if ("edit" === e.event) {
             layer.open({
                 type: 2,
-                title: "编辑员工信息",
+                title: "编辑用户信息",
                 content: "userform?id=" + e.data.id,
                 area: ["800px", "550px"],
                 btn: ["确定", "取消"],

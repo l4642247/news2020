@@ -3,7 +3,8 @@ package cn.nicecoder.newssys.common.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
- 
+
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
  
 /**
@@ -55,6 +56,19 @@ public class RedisClient {
         }else{
             return true;
         }
+    }
+
+    /**
+     * 删除一堆缓存，并返回是否删除成功
+     * @author: longt
+     * @Param: [key]
+     * @return: boolean
+     * @date: 2020/12/22 上午10:48
+     */
+    public boolean deleteByGroup(String Group){
+        Set<String> keys = redisTemplate.keys(Group  + "*");
+        redisTemplate.delete(keys);
+        return true;
     }
  
     /**

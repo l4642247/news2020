@@ -34,4 +34,13 @@ public interface SysMenuService extends IService<SysMenu> {
      */
     public String getFirstHref(MenuNodeVO nodeVO);
 
+    /**
+     * @Description: 删除缓存
+     * @author: xxxxx
+     * @Param: []
+     * @return:
+     * @date: 2021/7/29 下午4:57
+     */
+    void removeChache();
+
 }

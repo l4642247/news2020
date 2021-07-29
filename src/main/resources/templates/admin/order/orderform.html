@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="layui-form-item">
-      <label class="layui-form-label">员工</label>
+      <label class="layui-form-label">用户</label>
       <div class="layui-input-inline">
         <select class="form-control" name="barberId">
           <option th:selected="${barberUser.username == username }" th:each="barberUser:${barberUserList}" th:value="${barberUser.id}" th:text="${barberUser.name}"></option>

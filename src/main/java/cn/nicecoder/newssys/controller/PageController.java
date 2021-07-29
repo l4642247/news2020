@@ -26,6 +26,7 @@ import cn.nicecoder.newssys.service.biz.NewsCatalogService;
 import cn.nicecoder.newssys.service.biz.NewsCommentService;
 import cn.nicecoder.newssys.service.biz.NewsService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,6 +53,9 @@ public class PageController {
     NewsCatalogService newsCatalogService;
 
     @Autowired
+    SysMenuService sysMenuService;
+
+    @Autowired
     NewsCommentService newsCommentService;
 
     @Autowired
@@ -59,9 +63,6 @@ public class PageController {
 
     @Autowired
     SysUserService sysUserService;
-
-    @Autowired
-    SysMenuService sysMenuService;
 
     @Autowired
     SysRoleMenuService sysRoleMenuService;
@@ -132,7 +133,7 @@ public class PageController {
     }
 
     @GetMapping("/menu/list")
-    public String menuList(){
+    public String menuList(Model model){
         return "admin/menu/menu";
     }
 
